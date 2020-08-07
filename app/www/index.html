@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+</head>
+<body class="full-height">
+    <div class="pure-g full-height">
+        <div class="pure-u-1-1 full-height">
+            <div class="conversation-box" id='c-box'>
+            </div>
+            <div class="pure-form">
+                <input id='input-chat' type="text" placeholder="Email" class="input-box" />
+                <button class="pure-button pure-button-primary" onclick="sendMessageWA()">Sign in</button>
+            </div>
+        </div>
+    </div>
+</body>
+<style>
+    body.full-height {
+        height: 100vh;
+    }
+    div.full-height {
+        height: 100%;
+    }
+    .conversation-box {
+        height: calc(100% - 52px);
+    }
+    .input-box {
+        width: calc(100% - 86px);
+    }
+</style>
+<script>
+    function addTextToBox(user, text) {
+        var node = document.createElement('P');
+        var textnode = document.createTextNode(user + ':\t' + text);
+        node.appendChild(textnode);
+        document.getElementById('c-box').appendChild(node);
+    }
+
+    function sendMessageWA() {
+        var xhttp = new XMLHttpRequest();
+        var messageCuid = 'msg-' + Date.now();
+        var messageBodyText = document.getElementById('input-chat').value;
+        var body = {
+            token: '03507d6d7e90bca7152a1fe72b7007565f2a1c199cae7',
+            uid: '573187469982',
+            to: '573187469982',
+            custom_uid: Date.now(),
+            message: messageBodyText
+        };
+
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status === 200) {
+                addTextToBox('User', messageBodyText);
+                sendMessageDF();
+            }
+        };
+
+        xhttp.open('POST', 'http://localhost:3000/api/wa/send_message', true);
+        xhttp.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
+        xhttp.send(JSON.stringify(body));
+    }
+
+    function sendMessageDF() {
+        var xhttp = new XMLHttpRequest();
+        var messageCuid = 'msg-' + Date.now();
+        var messageBodyText = document.getElementById('input-chat').value;
+        var body = {
+            event: 'message',
+            token: '03507d6d7e90bca7152a1fe72b7007565f2a1c199cae7',
+            'contact[uid]': '573187469982',
+            'contact[name]': 'Julio Marin',
+            'contact[type]': 'user',
+            'message[dtm]': Date.now(),
+            'message[uid]': Date.now(),
+            'message[cuid]': messageCuid,
+            'message[dir]': 'i',
+            'message[type]': 'chat',
+            'message[body][text]': messageBodyText,
+            'message[ack]': '2'
+        };
+
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status === 200) {
+                var responseJson = JSON.parse(this.responseText);
+                addTextToBox('Bot', responseJson.message);
+                document.getElementById('input-chat').value = '';
+            }
+        };
+
+        xhttp.open('POST', 'http://localhost:3000/api/wahooks/message_received', true);
+        xhttp.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
+        xhttp.send(JSON.stringify(body));
+    }
+    </script>
+</html>
