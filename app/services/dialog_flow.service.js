@@ -6,6 +6,9 @@
 /** Dependencies */
 import dotenv from 'dotenv';
 
+/** Utils */
+import formatText from '../utils/commons';
+
 /** Third parties */
 import * as dialogFlow from '../third_parties/dialog_flow';
 
@@ -21,6 +24,12 @@ const languageCode = process.env.DIALOG_FLOW_LANGUAGE;
  * @param { string } text - body message
  * @return { string } dialog flow response
  */
-export const intent = async (session, text) => {
-    return await dialogFlow.intent(session, text, languageCode);
+export const intent = async (session, text, raw = false) => {
+    try {
+        const response = await dialogFlow.intent(session, text, languageCode, raw);
+        return raw ? response : formatText(response);
+    } catch (error) {
+        const { name, message } = error;
+        throw new Error(`${name} - ${message}`);
+    }
 };

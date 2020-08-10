@@ -3,9 +3,6 @@
  * @author jotacemarin
  */
 
-/** Utils */
-import formatText from '../utils/commons';
-
 /** Services */
 import * as dialogFlow from '../services/dialog_flow.service';
 import * as wabox from '../services/wabox.service';
@@ -29,11 +26,14 @@ export const messageReceived = async (req, res, next) => {
     
     const contact = body['contact[uid]'];
     const message = body['message[body][text]'];
-    const dfRawResponse = await dialogFlow.intent(contact, message);
-    const dfResponse = formatText(dfRawResponse);
-    const { data: waResponse } = await wabox.sendText(contact, dfResponse);
-    res.send({ message: dfResponse, ...waResponse });
-    return next();
+    try {
+        const dfResponse = await dialogFlow.intent(contact, message);
+        const waResponse = await wabox.sendText(contact, dfResponse);
+        res.send({ message: dfResponse, ...waResponse });
+        return next();
+    } catch (error) {
+        return next(error);
+    }
 };
 
 /**

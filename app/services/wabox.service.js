@@ -14,6 +14,11 @@ import * as wabox from '../third_parties/wabox';
  * @return { object } body of response from wabox
  */
 export const sendText = async (to, message, customUid = false) => {
-    const { data } = await wabox.sendText(to, message, customUid);
-    return { data };
+    try {
+        const { data } = await wabox.sendText(to, message, customUid);
+        return data;
+    } catch (error) {
+        const { name, message } = error;
+        throw new Error(`${name} - ${message}`);
+    }
 };

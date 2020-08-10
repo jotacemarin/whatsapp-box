@@ -37,7 +37,12 @@ export const sendText = async (to, message, customUid = false) => {
         body.custom_uid = customUid;
     }
 
-    return await axios.post(`${waboxApi}/send/chat`, body);
+    try {
+        return await axios.post(`${waboxApi}/send/chat`, body);
+    } catch (error) {
+        const { name, message } = error;
+        throw new Error(`${name} - ${message}`);
+    }
 };
 
 /**
@@ -61,7 +66,12 @@ export const sendImage = async (to, urlImage, options = false) => {
         body = rawBody;
     }
 
-    return await axios.post(`${waboxApi}/send/image`, body);
+    try {
+        return await axios.post(`${waboxApi}/send/image`, body);
+    } catch (error) {
+        const { name, message } = error;
+        throw new Error(`${name} - ${message}`);
+    }
 };
 
 /**

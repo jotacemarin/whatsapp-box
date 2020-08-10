@@ -39,7 +39,7 @@ export const echo = (req, res, next) => {
  */
 export const runSample = async (req, res, next) => {
     const { session, message } = req.body;
-    const dfResponse = await dialogFlow.intent(session, message);
+    const dfResponse = await dialogFlow.intent(session, message, true);
     res.send({ response: dfResponse });
     return next();
 };

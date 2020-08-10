@@ -10,7 +10,7 @@ import restifyPlugins from 'restify-plugins';
 import corsMiddleware from 'restify-cors-middleware';
 
 /** Logger */
-import logger from './utils/logger';
+import logger, { debug } from './utils/logger';
 
 /** Routes */
 import routes from './routes';
@@ -28,16 +28,12 @@ server.use(restifyPlugins.queryParser({ mapParams: true }));
 server.use(restifyPlugins.fullResponse());
 server.pre(cors.preflight);
 server.use(cors.actual);
-
-server.pre((req, res, next) => {
-    req.log.debug('%s %s', req.method, req.url);
-    next();
-});
-
-
+server.pre(debug);
 
 /** Init server */
 server.listen(process.env.PORT, () => {
     routes(server);
     console.log('Server ready. Listening on PORT %s', process.env.PORT);
 });
+
+export default server;
