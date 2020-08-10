@@ -4,7 +4,7 @@
  */
 
 /** Services */
-import * as wabox from '../services/wabox.service';
+import * as waService from '../services/wa.service';
 
 /**
  * Function to send message with whatsapp
@@ -16,7 +16,7 @@ import * as wabox from '../services/wabox.service';
 export const sendMessage = async (req, res, next) => {
     const { to, message } = req.body;
     try {
-        const { data: response } = await wabox.sendText(to, message);
+        const response = await waService.sendText(to, message);
         res.send(response);
         return next();
     } catch (error) {

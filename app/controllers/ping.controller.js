@@ -4,7 +4,7 @@
  */
 
 /** Services */
-import * as dialogFlow from '../services/dialog_flow.service';
+import * as pingService from '../services/ping.service';
 
 /**
  * Ping function to retrieve a JSON
@@ -39,7 +39,7 @@ export const echo = (req, res, next) => {
  */
 export const runSample = async (req, res, next) => {
     const { session, message } = req.body;
-    const dfResponse = await dialogFlow.intent(session, message, true);
+    const dfResponse = await pingService.runSample(session, message);
     res.send({ response: dfResponse });
     return next();
 };

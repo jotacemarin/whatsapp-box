@@ -1,5 +1,5 @@
 /**
- * @file dialog_flow.js
+ * @file wabox.js
  * @author jotacemarin
  */
 
@@ -128,4 +128,21 @@ export const sendMedia = async (to, url, options = false) => {
  */
 export const checkAccount = async () => {
     return await axios.post(`${waboxApi}/send/image`, waboxDefaultValues);
+};
+
+/**
+ * Send message to recipient
+ * @param { number | string } to recipient account phone number
+ * @param { string } message - text to be send
+ * @param { string } customUid - custom unique id for the new message to send
+ * @return { object } body of response from wabox
+ */
+export const sendMessage = async (to, message, customUid = false) => {
+    try {
+        const { data } = await sendText(to, message, customUid);
+        return data;
+    } catch (error) {
+        const { name, message } = error;
+        throw new Error(`${name} - ${message}`);
+    }
 };

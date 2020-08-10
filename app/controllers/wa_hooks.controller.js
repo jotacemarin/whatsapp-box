@@ -4,8 +4,7 @@
  */
 
 /** Services */
-import * as dialogFlow from '../services/dialog_flow.service';
-import * as wabox from '../services/wabox.service';
+import * as waHooksService from '../services/wa_hooks.service';
 
 /**
  * Function to destructuring incoming whatsapp message
@@ -27,9 +26,8 @@ export const messageReceived = async (req, res, next) => {
     const contact = body['contact[uid]'];
     const message = body['message[body][text]'];
     try {
-        const dfResponse = await dialogFlow.intent(contact, message);
-        const waResponse = await wabox.sendText(contact, dfResponse);
-        res.send({ message: dfResponse, ...waResponse });
+        const response = await waHooksService.messageReceived(contact, message);
+        res.send(response);
         return next();
     } catch (error) {
         return next(error);
