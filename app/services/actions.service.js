@@ -9,6 +9,7 @@ import {
     destructStructValue,
     extractParams
 } from '../utils/commons';
+import { dateFormat, hourFormat } from '../third_parties/moment';
 
 /** Constants */
 import {
@@ -30,9 +31,10 @@ export const defaultAction = result => result;
  * @return { string } formatted message from dialog flow
  */
 export const answerDate = ({ date }, result) => {
-    const [ _date ] = extractParams(result);
     const { stringValue: sysDate } = date;
-    return result.replace(_date, sysDate);
+    const [ _date ] = extractParams(result);
+    const dateFormatted = dateFormat(sysDate);
+    return result.replace(_date, dateFormatted);
 };
 
 /**
@@ -43,9 +45,10 @@ export const answerDate = ({ date }, result) => {
  */
 export const answerTime = (fields, result) => {
     const { structValue: dateTime } = fields['date-time'];
-    const [ hour ] = extractParams(result);
+    const [ _hour ] = extractParams(result);
     const { startDateTime } = destructStructValue(dateTime);
-    return result.replace(hour, startDateTime);
+    const hourFormatted = hourFormat(startDateTime);
+    return result.replace(_hour, hourFormatted);
 };
 
 /**

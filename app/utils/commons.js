@@ -3,6 +3,9 @@
  * @author jotacemarin
  */
 
+/** Dependencies */
+import moment from 'moment';
+
 /**
  * Transform raw message to send to whatsapp
  * @param { string } message - message to format
