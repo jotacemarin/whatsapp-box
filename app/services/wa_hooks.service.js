@@ -7,6 +7,9 @@
 import * as dialogFlow from '../third_parties/dialog_flow';
 import * as wabox from '../third_parties/wabox';
 
+/** Services */
+import * as actions from '../services/actions.service';
+
 /**
  * Respond to incoming message
  * @param { number | string } contact contact number account
@@ -14,7 +17,8 @@ import * as wabox from '../third_parties/wabox';
  * @return { object } message to send
  */
 export const messageReceived = async (contact, message) => {
-    const { result } = await dialogFlow.intent(contact, message);
-    const waResponse = await wabox.sendText(contact, result);
-    return { message: result, ...waResponse };
+    const dfResponse = await dialogFlow.intent(contact, message);
+    const actResponse = actions.makeAction(dfResponse);
+    const waResponse = await wabox.sendText(contact, actResponse);
+    return { message: actResponse, ...dfResponse, ...waResponse };
 };

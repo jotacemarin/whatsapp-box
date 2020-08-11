@@ -10,6 +10,7 @@
       "jsx": true
     }
   },
+  "ignorePatterns": ["dist-app/", "node_modules/"],
   "rules": {
     "eol-last": 2,
     "eqeqeq": 2,

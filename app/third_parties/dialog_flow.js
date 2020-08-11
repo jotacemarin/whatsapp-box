@@ -19,9 +19,9 @@ const languageCode = process.env.DIALOG_FLOW_LANGUAGE;
  * @param { number | string } session - id of chat session
  * @return { object } a session client and session path
  */
-export const getSessionPath = session => {
-    const sessionClient = new dialogflow.SessionsClient();
-    const sessionPath = sessionClient.projectAgentSessionPath(projectId, session);
+export const getSessionPath = async session => {
+    const sessionClient = await new dialogflow.SessionsClient();
+    const sessionPath = await sessionClient.projectAgentSessionPath(projectId, session);
     return { sessionClient, sessionPath };
 };
 
@@ -33,7 +33,7 @@ export const getSessionPath = session => {
  * @return { string } dialog flow response
  */
 export const detectIntent = async (session, text, languageCode) => {
-    const { sessionClient, sessionPath } = getSessionPath(session);
+    const { sessionClient, sessionPath } = await getSessionPath(session);
   
     const request = {
         session: sessionPath,

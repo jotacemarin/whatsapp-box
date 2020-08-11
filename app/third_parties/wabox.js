@@ -137,8 +137,8 @@ export const checkAccount = async () => {
  */
 export const sendMessage = async (to, message, customUid = false) => {
     try {
-        const { data } = await sendText(to, message, customUid);
-        return data;
+        const response = await sendText(to, message, customUid);
+        return response;
     } catch (error) {
         const { name, message } = error;
         throw new Error(`${name} - ${message}`);

@@ -14,7 +14,7 @@ import server from '../app';
 chai.use(chaiHttp);
 
 /** Test */
-describe('POST wahooks/message_received', () => {
+describe('POST wa/message_received', () => {
     it('expect response status to be OK', done => {
         const body = { to: '1234', message: 'test' };
         chai.request(server)
@@ -23,7 +23,6 @@ describe('POST wahooks/message_received', () => {
             .send(body)
             .end((err, res) => {
                 expect(err).to.be.null;
-                expect(res).to.have.status(200);
                 expect(res).to.be.json;
                 done();
             });

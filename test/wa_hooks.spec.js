@@ -15,7 +15,7 @@ chai.use(chaiHttp);
 
 /** Test */
 describe('POST wahooks/message_received', () => {
-    it('expect response status to be OK', done => {
+    it('request failed because is group chat', done => {
         const body = {
             'contact[type]': 'group',
             'message[type]': 'chat',
@@ -34,7 +34,7 @@ describe('POST wahooks/message_received', () => {
             });
     });
 
-    it('expect response status to be OK', done => {
+    it('request failed because is message with image', done => {
         const body = {
             'contact[type]': 'user',
             'message[type]': 'image',
@@ -58,7 +58,7 @@ describe('POST wahooks/message_acknowledge', () => {
     it('expect response status to be OK', done => {
         const body = { ack: 1 };
         chai.request(server)
-            .post('/api/wahooks/message_received')
+            .post('/api/wahooks/message_acknowledge')
             .set('content-type', 'application/json;charset=UTF-8')
             .send(body)
             .end((err, res) => {
