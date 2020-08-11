@@ -14,10 +14,7 @@ dotenv.config();
 const waboxApi = process.env.WABOXAPP_API_URL;
 const waboxToken = process.env.WABOXAPP_API_TOKEN;
 const waboxCellphone = process.env.WABOXAPP_CELLPHONE_ACCOUNT;
-const waboxDefaultValues = {
-    token: waboxToken,
-    uid: waboxCellphone
-};
+const waboxDefaultValues = { token: waboxToken, uid: waboxCellphone };
 
 /**
  * Send text to recipient
@@ -38,7 +35,8 @@ export const sendText = async (to, message, customUid = false) => {
     }
 
     try {
-        return await axios.post(`${waboxApi}/send/chat`, body);
+        const { data } = await axios.post(`${waboxApi}/send/chat`, body);
+        return data;
     } catch (error) {
         const { name, message } = error;
         throw new Error(`${name} - ${message}`);

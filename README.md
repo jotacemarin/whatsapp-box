@@ -10,6 +10,7 @@ A simple whatsapp bot with dialog flow writen in javascript
 ## Available scripts
 
 * `yarn run lint` run eslint
+* `yarn run test` run chai test
 * `yarn run clean` remove dist folder
 * `yarn run transpile` using babel to transpile es6 to commonjs in dist folder
 * `yarn run build` run scripts clean and transpile

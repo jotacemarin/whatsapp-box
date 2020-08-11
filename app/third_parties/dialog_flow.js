@@ -7,9 +7,6 @@
 import dotenv from 'dotenv';
 import dialogflow from '@google-cloud/dialogflow';
 
-/** Utils */
-import formatText from '../utils/commons';
-
 /** Get config */
 dotenv.config();
 
@@ -35,7 +32,7 @@ export const getSessionPath = session => {
  * @param { string } languageCode - language code (default es-CO)
  * @return { string } dialog flow response
  */
-export const detectIntent = async (session, text, languageCode, raw = false) => {
+export const detectIntent = async (session, text, languageCode) => {
     const { sessionClient, sessionPath } = getSessionPath(session);
   
     const request = {
@@ -47,15 +44,15 @@ export const detectIntent = async (session, text, languageCode, raw = false) => 
   
     try {
         const rawResponse = await sessionClient.detectIntent(request);
-        if (raw) {
-            return rawResponse;
-        } else {
-            const [ response ] = rawResponse;
-            const {
-                queryResult: { fulfillmentText: result }
-            } = response;
-            return result;
-        }
+        const [ response ] = rawResponse;
+        const {
+            queryResult: {
+                action,
+                parameters: { fields },
+                fulfillmentText: result
+            }
+        } = response;
+        return { action, fields, result };
     } catch (error) {
         const { name, message } = error;
         throw new Error(`${name} - ${message}`);
@@ -68,10 +65,9 @@ export const detectIntent = async (session, text, languageCode, raw = false) => 
  * @param { string } text - body message
  * @return { object | string } dialog flow response
  */
-export const intent = async (session, text, raw = false) => {
+export const intent = async (session, text) => {
     try {
-        const response = await detectIntent(session, text, languageCode, raw);
-        return raw ? response : formatText(response);
+        return await detectIntent(session, text, languageCode);
     } catch (error) {
         const { name, message } = error;
         throw new Error(`${name} - ${message}`);

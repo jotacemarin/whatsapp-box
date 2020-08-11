@@ -14,7 +14,7 @@ import * as wabox from '../third_parties/wabox';
  * @return { object } message to send
  */
 export const messageReceived = async (contact, message) => {
-    const dfResponse = await dialogFlow.intent(contact, message);
-    const waResponse = await wabox.sendText(contact, dfResponse);
-    return { message: dfResponse, ...waResponse };
+    const { result } = await dialogFlow.intent(contact, message);
+    const waResponse = await wabox.sendText(contact, result);
+    return { message: result, ...waResponse };
 };

@@ -38,8 +38,12 @@ export const echo = (req, res, next) => {
  * @return { function } move to the next function in the chain
  */
 export const runSample = async (req, res, next) => {
-    const { session, message } = req.body;
-    const dfResponse = await pingService.runSample(session, message);
-    res.send({ response: dfResponse });
+    const { session, message, raw } = req.body;
+    const dfResponse = await pingService.runSample(session, message, raw);
+    if (raw) {
+        res.send(dfResponse);
+    } else {
+        res.send({ response: dfResponse });
+    }
     return next();
 };
