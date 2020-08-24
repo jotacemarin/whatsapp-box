@@ -7,7 +7,9 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint \"./**/*.js\"",
-    "test": "mocha --require @babel/polyfill --require @babel/register './test/**/*.spec.js'",
+    "setenv:develop": "cp ./environments/development.env .env",
+    "mocha": "mocha --require @babel/polyfill --require @babel/register './test/**/*.spec.js'",
+    "test": "npm-run-all setenv:develop mocha",
     "clean": "rimraf dist-app",
     "transpile": "babel ./app --out-dir dist-app",
     "build": "npm-run-all clean transpile",
@@ -40,6 +42,7 @@
     "eslint": "7.6.0",
     "mocha": "8.1.1",
     "nodemon": "2.0.4",
-    "rimraf": "3.0.2"
+    "rimraf": "3.0.2",
+    "sinon": "9.0.3"
   }
 }
