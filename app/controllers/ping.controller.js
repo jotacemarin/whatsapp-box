@@ -40,10 +40,6 @@ export const echo = (req, res, next) => {
 export const runSample = async (req, res, next) => {
     const { session, message, raw } = req.body;
     const dfResponse = await pingService.runSample(session, message, raw);
-    if (raw) {
-        res.send(dfResponse);
-    } else {
-        res.send({ response: dfResponse });
-    }
+    res.send(raw ? dfResponse : { response: dfResponse });
     return next();
 };
