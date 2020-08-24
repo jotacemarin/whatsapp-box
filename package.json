@@ -12,7 +12,8 @@
     "transpile": "babel ./app --out-dir dist-app",
     "build": "npm-run-all clean transpile",
     "server": "node ./dist-app",
-    "server:dev": "nodemon --exec babel-node ./app"
+    "server:dev": "nodemon --exec babel-node ./app",
+    "build:run": "npm-run-all clean transpile server"
   },
   "dependencies": {
     "@google-cloud/dialogflow": "3.2.0",
