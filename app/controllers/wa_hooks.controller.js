@@ -28,13 +28,11 @@ export const messageReceived = async (req, res, next) => {
         body[key] = value;
     });
 
+    const eventType = body['event'];
     const contactType = body['contact[type]'];
     const messageType = body['message[type]'];
 
-    logger.info(contactType);
-    logger.info(messageType);
-
-    if (contactType === 'group' || messageType !== 'chat') {
+    if (contactType === 'group' || messageType !== 'chat' || eventType !== 'message') {
         res.send({ message: 'none', success: false });
         return next();
     }
