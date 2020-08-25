@@ -22,7 +22,7 @@ const logger = log('api:error-handler');
  */
 export const internalError = (req, res, err, next) => {
     const cause = err.cause();
-    logger.error(`${err.body.code}, ${cause.message}, ${err.stack}`);
+    logger.error(`InternalError: ${err.body.code}, ${cause.message}, ${err.stack}`);
     res.send(err.statusCode, { code: err.body.code, message: cause.message });
     return next();
 };
@@ -36,6 +36,7 @@ export const unhandleError = callback => {
         try {
             return await callback(req, res, next);
         } catch (error) {
+            logger.error(`UnhandleError: ${error.name}, ${error.message}. ${error.stack}`);
             if (!(error instanceof HttpError)) {
                 error = new InternalServerError(error);
             }

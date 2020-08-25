@@ -6,15 +6,29 @@
 /** Dependencies */
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
+import dotenv from 'dotenv';
+import nock from 'nock';
 
 /** Server */
 import server from '../app';
 
 /** Configure */
 chai.use(chaiHttp);
+dotenv.config();
+
+/** Default values */
+const waboxApi = process.env.WABOXAPP_API_URL;
 
 /** Test */
 describe('POST wahooks/message_received', () => {
+    beforeEach(
+        () => {
+            nock(waboxApi)
+                .post('/send/chat')
+                .reply(200, { data: 1 });
+        }
+    );
+
     it('request failed because is group chat', done => {
         const body = {
             'contact[type]': 'group',
