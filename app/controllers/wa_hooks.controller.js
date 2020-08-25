@@ -3,8 +3,14 @@
  * @author jotacemarin
  */
 
+/** Utils */
+import log from '../utils/logger';
+
 /** Services */
 import * as waHooksService from '../services/wa_hooks.service';
+
+/** Instance logger */
+const logger = log('wa_hooks:controller');
 
 /**
  * Function to destructuring incoming whatsapp message
@@ -17,6 +23,8 @@ export const messageReceived = async (req, res, next) => {
     const { body } = req;
     const contactType = body['contact[type]'];
     const messageType = body['message[type]'];
+
+    logger.info(body);
 
     if (contactType === 'group' || messageType !== 'chat') {
         res.send({ message: 'none', success: false });
