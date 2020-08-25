@@ -25,6 +25,8 @@ export const messageReceived = async (req, res, next) => {
     const messageType = body['message[type]'];
 
     logger.info(body);
+    logger.info(contactType);
+    logger.info(messageType);
 
     if (contactType === 'group' || messageType !== 'chat') {
         res.send({ message: 'none', success: false });
