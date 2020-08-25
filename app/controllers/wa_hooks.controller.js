@@ -25,6 +25,7 @@ export const messageReceived = async (req, res, next) => {
     const messageType = body['message[type]'];
 
     logger.info(body);
+    logger.info(typeof body);
     logger.info(contactType);
     logger.info(messageType);
 
