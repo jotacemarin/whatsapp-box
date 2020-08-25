@@ -20,7 +20,14 @@ const logger = log('wa_hooks:controller');
  * @return { function } move to the next function in the chain
  */
 export const messageReceived = async (req, res, next) => {
-    const { body } = req;
+    const { rawBody } = req;
+
+    const body = {};
+    rawBody.split('&').forEach(kv => {
+        const [ key, value ] = kv.split('=');
+        body[key] = value;
+    });
+
     const contactType = body['contact[type]'];
     const messageType = body['message[type]'];
 
