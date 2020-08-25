@@ -34,12 +34,15 @@ export const sendText = async (to, message, customUid = false) => {
         body.custom_uid = customUid;
     }
 
+    console.log('sendText body', body);
+
     try {
         const { data } = await axios.post(`${waboxApi}/send/chat`, body);
+        console.log('sendText data', data);
         return data;
     } catch (error) {
-        const { name, message } = error;
-        throw new Error(`${name} - ${message}`);
+        console.log('sendText, error', error);
+        throw error; 
     }
 };
 
