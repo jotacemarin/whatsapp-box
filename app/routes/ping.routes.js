@@ -6,6 +6,9 @@
 /** Controllers */
 import * as pingController from '../controllers/ping.controller';
 
+/** Utils */
+import { unhandleError } from '../utils/error_handler';
+
 /** Default values */
 const api = `${process.env.API}/ping`;
 
@@ -16,5 +19,5 @@ const api = `${process.env.API}/ping`;
 export default server => {
     server.get(`${api}`, pingController.version);
     server.get(`${api}/echo/:echo`, pingController.echo);
-    server.post(`${api}/sample`, pingController.runSample);
+    server.post(`${api}/sample`, unhandleError(pingController.runSample));
 };

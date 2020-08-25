@@ -2,16 +2,35 @@ name: Whatsapp box (dialog flow bot to whatsapp) CI
 
 on:
   pull_request:
+    branches: [ master, staging ]
+  push: 
     branches: [ master ]
 
 jobs:
   test_pull_request:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 12.x ]
     steps:
       - uses: actions/checkout@v2
-      - name: Run a one-line script
-        run: echo Hello, world!
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: Use nodejs ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Yarn install
+        uses: Borales/actions-yarn@v2.3.0
+        with:
+          cmd: install
+      - name: Run eslint
+        uses: Borales/actions-yarn@v2.3.0
+        with:
+          cmd: lint
+      - name: Run mocha and chai test
+        uses: Borales/actions-yarn@v2.3.0
+        with:
+          cmd: test
+      - name: Run clean path
+        uses: Borales/actions-yarn@v2.3.0
+        with:
+          cmd: clean

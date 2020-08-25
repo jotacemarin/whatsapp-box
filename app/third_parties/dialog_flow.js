@@ -34,29 +34,24 @@ export const getSessionPath = async session => {
  */
 export const detectIntent = async (session, text, languageCode) => {
     const { sessionClient, sessionPath } = await getSessionPath(session);
-  
+
     const request = {
         session: sessionPath,
         queryInput: {
             text: { text: text, languageCode },
         },
     };
-  
-    try {
-        const rawResponse = await sessionClient.detectIntent(request);
-        const [ response ] = rawResponse;
-        const {
-            queryResult: {
-                action,
-                parameters: { fields },
-                fulfillmentText: result
-            }
-        } = response;
-        return { action, fields, result };
-    } catch (error) {
-        const { name, message } = error;
-        throw new Error(`${name} - ${message}`);
-    }
+
+    const rawResponse = await sessionClient.detectIntent(request);
+    const [ response ] = rawResponse;
+    const {
+        queryResult: {
+            action,
+            parameters: { fields },
+            fulfillmentText: result
+        }
+    } = response;
+    return { action, fields, result };
 };
 
 /**
@@ -66,10 +61,5 @@ export const detectIntent = async (session, text, languageCode) => {
  * @return { object | string } dialog flow response
  */
 export const intent = async (session, text) => {
-    try {
-        return await detectIntent(session, text, languageCode);
-    } catch (error) {
-        const { name, message } = error;
-        throw new Error(`${name} - ${message}`);
-    }
+    return await detectIntent(session, text, languageCode);
 };
