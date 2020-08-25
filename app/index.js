@@ -9,8 +9,9 @@ import restify from 'restify';
 import restifyPlugins from 'restify-plugins';
 import corsMiddleware from 'restify-cors-middleware';
 
-/** Logger */
+/** Utils */
 import logger, { debug } from './utils/logger';
+import { internalError } from './utils/error_handler';
 
 /** Routes */
 import routes from './routes';
@@ -22,6 +23,7 @@ dotenv.config();
 const server = restify.createServer({ log: logger('api') });
 const cors = corsMiddleware({ origins: ['*'] });
 
+/** Configure server */
 server.use(restifyPlugins.jsonBodyParser({ mapParams: true }));
 server.use(restifyPlugins.acceptParser(server.acceptable));
 server.use(restifyPlugins.queryParser({ mapParams: true }));
@@ -35,5 +37,8 @@ server.listen(process.env.PORT, () => {
     routes(server);
     console.log('Server ready. Listening on PORT %s', process.env.PORT);
 });
+
+/** */
+server.on('InternalServer', internalError);
 
 export default server;

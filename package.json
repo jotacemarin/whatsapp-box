@@ -7,12 +7,15 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint \"./**/*.js\"",
-    "test": "mocha --require @babel/polyfill --require @babel/register './test/**/*.spec.js'",
+    "setenv:develop": "cp ./environments/development.env .env",
+    "mocha": "mocha --require @babel/polyfill --require @babel/register './test/**/*.spec.js'",
+    "test": "npm-run-all setenv:develop mocha",
     "clean": "rimraf dist-app",
     "transpile": "babel ./app --out-dir dist-app",
     "build": "npm-run-all clean transpile",
     "server": "node ./dist-app",
-    "server:dev": "nodemon --exec babel-node ./app"
+    "server:dev": "nodemon --exec babel-node ./app",
+    "build:run": "npm-run-all clean transpile server"
   },
   "dependencies": {
     "@google-cloud/dialogflow": "3.2.0",
@@ -23,6 +26,7 @@
     "npm-run-all": "4.1.5",
     "restify": "8.5.1",
     "restify-cors-middleware": "1.1.1",
+    "restify-errors": "^8.0.2",
     "restify-plugins": "1.6.0"
   },
   "devDependencies": {
@@ -38,7 +42,9 @@
     "chai-http": "4.3.0",
     "eslint": "7.6.0",
     "mocha": "8.1.1",
+    "nock": "^13.0.4",
     "nodemon": "2.0.4",
-    "rimraf": "3.0.2"
+    "rimraf": "3.0.2",
+    "sinon": "9.0.3"
   }
 }
