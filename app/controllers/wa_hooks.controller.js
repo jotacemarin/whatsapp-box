@@ -23,7 +23,7 @@ export const messageReceived = async (req, res, next) => {
     const { rawBody } = req;
 
     const body = {};
-    rawBody.split('&').forEach(kv => {
+    decodeURI(rawBody).split('&').forEach(kv => {
         const [ key, value ] = kv.split('=');
         body[key] = value;
     });
@@ -31,8 +31,6 @@ export const messageReceived = async (req, res, next) => {
     const contactType = body['contact[type]'];
     const messageType = body['message[type]'];
 
-    logger.info(body);
-    logger.info(typeof body);
     logger.info(contactType);
     logger.info(messageType);
 
