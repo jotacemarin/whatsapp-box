@@ -41,6 +41,10 @@ export const messageReceived = async (req, res, next) => {
     
     const contact = body['contact[uid]'];
     const message = body['message[body][text]'];
+    
+    logger.info(contact);
+    logger.info(message);
+
     try {
         const response = await waHooksService.messageReceived(contact, message);
         res.send(response);
