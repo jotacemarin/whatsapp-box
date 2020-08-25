@@ -19,10 +19,10 @@ import * as actions from '../services/actions.service';
 export const messageReceived = async (contact, message) => {
     console.log(contact, message);
     const dfResponse = await dialogFlow.intent(contact, message);
-    console.log(dfResponse);
+    console.log('dfResponse', dfResponse);
     const actResponse = actions.makeAction(dfResponse);
-    console.log(actResponse);
+    console.log('actResponse', actResponse);
     const waResponse = await wabox.sendText(contact, actResponse);
-    console.log(waResponse);
+    console.log('waResponse', waResponse);
     return { message: actResponse, ...dfResponse, ...waResponse };
 };
