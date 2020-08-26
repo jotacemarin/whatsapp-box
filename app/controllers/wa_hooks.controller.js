@@ -33,8 +33,8 @@ export const messageReceived = async (req, res, next) => {
     const ackType = body['message[ack]'];
     const messageType = body['message[type]'];
     const messageDir = body['message[dir]'];
-    logger.info(ackType);
-    logger.info(messageDir);
+
+    logger.info(`contact=${contact};ackType=${ackType};message=${message};messageDir=${messageDir}`);
 
     if (contactType === 'group' || messageType !== 'chat' || eventType !== 'message' || messageDir === 'o') {
         res.send({ message: 'none', success: false });
@@ -43,9 +43,6 @@ export const messageReceived = async (req, res, next) => {
     
     const contact = body['contact[uid]'];
     const message = body['message[body][text]'];
-    
-    logger.info(contact);
-    logger.info(message);
 
     try {
         const response = await waHooksService.messageReceived(contact, message);
